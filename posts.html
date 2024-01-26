@@ -1,0 +1,36 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}!
+{% load custom_tags %}
+
+{% block title %}
+Главные новости недели
+{% endblock title %}
+
+{% block content %}
+   <h1>Все новости</h1>
+   <h3>{% current_date '%d.%b.%Y' %}</h3>
+   <h3> {{ next_sale|default_if_none:"Чуть позже сообщим о дате публикации!" }} </h3>
+
+   <hr>
+   {% if posts %}
+       <table>
+           <tr>
+               <td style="width:300px; text-align:left;">Заголовок</td>
+               <td style="width:200px; text-align:left;">Дата публикации</td>
+               <td style="width:450px; text-align:left;">Текст</td>
+           </tr>
+
+           {% for post in posts %}
+           <tr>
+               <td><strong>{{ post.post_title|censor }}</strong></td>
+               <td><em>{{ post.post_time|format_time }}</em></td>
+               <td>{{ post.preview|censor }}</td>  <!-- метод preview вместо truncatewords: 20 -->
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Новостей нет!</h2>
+   {% endif %}
+{% endblock content %}
